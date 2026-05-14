@@ -1,12 +1,15 @@
 import numpy as np
 
 """
-Activation functions - each function assumes variable length and dimension inputs
+Helper functions for activation functions and their derivatives.
 """
 
 def sigmoid(features):
     """Sigmoid activation function"""
     return 1 / (1 + np.exp(-features))
+
+def sigmoid_gradient(features):
+    return sigmoid(features) * (1 - sigmoid(features))
 
 def relu(features):
     """ReLU activation function"""
