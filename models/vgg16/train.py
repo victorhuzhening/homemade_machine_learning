@@ -61,7 +61,7 @@ def main():
     log_freq = getattr(args, "log_freq")
     ckpt_freq = getattr(args, "ckpt_freq")
 
-    best_val_loss = 0.
+    best_val_loss = float('inf')
     for state["epoch"] in range(state["epoch"], args.num_epochs):
         LOGGER.info(f"Beginning epoch {state['epoch']} at epoch step {state['epoch_step']}")
 
@@ -75,6 +75,7 @@ def main():
                 continue
 
             input, label = batch[0], batch[1]
+            input, label = input.to(model.device), label.to(model.device)
             output = model(input)
             loss = criterion(output, label)
             if epoch_step % log_freq == 0:     # every log_freq'th 
@@ -154,8 +155,7 @@ def _init_model(args: object, logger: logging.Logger) -> torch.nn.Module:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.manual_seed(getattr(args, "seed"))
 
-    with device:
-        model = VGG16(num_classes=100)
+    model = VGG16(num_classes=100).to(device)
 
     logger.info(
         f"Training {sum(p.numel() for p in model.parameters())} model parameters" 
@@ -205,7 +205,7 @@ def _get_parser() -> argparse.ArgumentParser:
     parser.add_argument("-e", "--experiment_name", default=None)
     parser.add_argument("-d", "--dataset_dir", default=None, required=True)
     parser.add_argument("-o", "--output_dir", default="/models/vgg-16/experiments/")
-    parser.add_argument("-lr", "--learning_rate", default=1e-4, type=int)
+    parser.add_argument("-lr", "--learning_rate", default=1e-4, type=float)
     parser.add_argument("-b", "--batch_size", default=16, type=int)
     parser.add_argument("--num_epochs", default=20, type=int)
     parser.add_argument("--log-freq", default=10, type=int)
