@@ -1,11 +1,11 @@
 import numpy as np
-
-from utils.activations import sigmoid, sigmoid_gradient
+from utils import sigmoid, sigmoid_gradient
 
 class MultilayerPerceptron:
     """
     Pure NumPy implementation of a single hidden layer MLP model, parameterized by thetas and bias.
-    In other words, we keep track of layer weights instead of layers.
+    In other words, we keep track of layer weights instead of layers. As such, the model initializes
+    with training data and labels.
     
     params:
         data: dataset

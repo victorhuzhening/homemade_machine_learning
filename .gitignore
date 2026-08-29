@@ -3,3 +3,7 @@ test.py
 /data/
 __pycache__/
 /models/vgg16/experiments/*/
+run_grabcut.ipynb
+birefnet/
+rmbg/
+.vscode/
